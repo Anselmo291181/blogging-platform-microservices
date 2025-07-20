@@ -1,0 +1,58 @@
+name: CI - Auth Service
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'auth-service/**'
+  pull_request:
+    branches: [main]
+    paths:
+      - 'auth-service/**'
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: auth-service
+
+    services:
+      mongo:
+        image: mongo
+        ports:
+          - 27017:27017
+        options: >-
+          --health-cmd "mongosh --eval 'db.adminCommand({ ping: 1 })'"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=10
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Use Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Copy test environment file
+        run: cp .env.test .env
+
+      - name: Wait for Mongo to be ready
+        run: |
+          for i in {1..10}; do
+            if mongosh --eval "db.adminCommand({ ping: 1 })"; then
+              echo "Mongo is up!"
+              break
+            fi
+            echo "Waiting for Mongo..."
+            sleep 3
+          done
+
+      - name: Run tests
+        run: npm test
