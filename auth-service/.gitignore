@@ -1,0 +1,38 @@
+# Node dependencies
+node_modules/
+
+# Logs
+logs/
+*.log
+
+# Runtime data
+pids
+*.pid
+*.seed
+*.pid.lock
+
+# dotenv environment files
+.env
+.env.test
+
+# Package lock
+package-lock.json
+
+# Coverage reports
+coverage/
+.nyc_output/
+
+# Test artifacts
+jest-test-results.json
+
+# VSCode settings (opcional)
+.vscode/
+
+# Docker
+docker-compose.override.yml
+*.local.yml
+*.env.local
+
+# System files
+.DS_Store
+Thumbs.db
