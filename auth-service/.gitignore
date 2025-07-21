@@ -13,7 +13,7 @@ pids
 
 # dotenv environment files
 .env
-.env.test
+!.env.test
 
 # Package lock
 package-lock.json
